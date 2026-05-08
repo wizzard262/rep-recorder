@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="RepRecorder.Api/RepRecorder.Api.csproj" />
+  <Project Path="RepRecorder.Tests/RepRecorder.Tests.csproj" Id="4524e993-c33f-4942-985c-531492e0a0df" />
+</Solution>

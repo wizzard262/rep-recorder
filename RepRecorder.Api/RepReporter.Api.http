@@ -1,0 +1,54 @@
+@BaseAddress = https://localhost:7113
+
+### ── RepSetScheme ──────────────────────────────────────────────────────────────
+
+# GET all RepSetScheme (with optional pagination)
+GET {{BaseAddress}}/RepSetScheme?pageNumber=1&pageSize=20&sortOrder=asc
+Accept: application/json
+
+###
+
+# GET all RepSetScheme (with optional pagination)
+GET {{BaseAddress}}/RepSetScheme?pageNumber=1&pageSize=20&sortOrder=desc
+Accept: application/json
+
+###
+
+# GET all RepSetScheme (with optional pagination) - sort order defaults to ASCENDING
+GET {{BaseAddress}}/RepSetScheme?pageNumber=1&pageSize=20
+Accept: application/json
+
+###
+
+# GET a RepSetScheme by ID
+GET {{BaseAddress}}/RepSetScheme/{{RepSetSchemeId}}
+Accept: application/json
+
+###
+
+# POST create a new RepSetScheme
+POST {{BaseAddress}}/RepSetScheme
+Content-Type: application/json
+X-User-Id: aaaaaaaa-0000-0000-0000-000000000001
+
+{
+  "Date": "2026-01-01",
+  "ExerciseMovement": "BenchPress",
+  "KilogramMass": 30,
+  "Repetitions": 5
+}
+
+###
+
+# PUT update an existing RepSetScheme
+PUT {{BaseAddress}}/RepSetScheme/{{RepSetSchemeId}}
+Content-Type: application/json
+X-User-Id: aaaaaaaa-0000-0000-0000-000000000001
+
+{
+  "Id": "{{RepSetSchemeId}}",
+  "Date": "2026-01-01",
+  "ExerciseMovement": "BenchPress",
+  "KilogramMass": 30,
+  "Repetitions": 5
+}
