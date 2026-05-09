@@ -69,6 +69,8 @@ export default function ListRetSetScheme() {
     deleteRow(id);
 
     // Invalidate ALL queries that fetch rep set schemes
+    
+    //ste:todo: delete does not currently trigger a refetch of the data
     queryClient.invalidateQueries({ queryKey: ["getRepSetSchemes"] });
 
     // // refetch data after deletion to update the table

@@ -1,4 +1,6 @@
 using System.Text.Json.Serialization;
+
+using Microsoft.AspNetCore.Http.Json;
 using Microsoft.Azure.Cosmos;
 using RepRecorder.Api;
 using RepRecorder.Api.Repositories;
@@ -18,12 +20,18 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddOpenApi();
 
-// ensure enums pass the text not the integer in API endpoints
+// ensure enums pass the text not the integer in CONTROLLER API endpoints
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     });
+
+// ensure enums pass the text not the integer in API endpoints for minimal APIs as well
+builder.Services.Configure<JsonOptions>(options =>
+{
+    options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
 
 // ------------------------------------------------------------
 // REGISTER REPOSITORY IMPLEMENTATION (FAKE OR COSMOS)
