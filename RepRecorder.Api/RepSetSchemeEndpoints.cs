@@ -9,7 +9,7 @@ public static class RepSetSchemeEndpoints
 {
     public static RouteGroupBuilder MapRepSetSchemeEndpoints(this IEndpointRouteBuilder routes)
     {
-        var group = routes.MapGroup("/api/repsetscheme");
+        var group = routes.MapGroup("/repsetscheme");
 
         group.MapGet("/", async (
             IRepSetSchemeRepository repo,
