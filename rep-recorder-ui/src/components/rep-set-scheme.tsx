@@ -69,19 +69,11 @@ export default function ListRetSetScheme() {
     deleteRow(id);
 
     // Invalidate ALL queries that fetch rep set schemes
-    
     //ste:todo: delete does not currently trigger a refetch of the data
     queryClient.invalidateQueries({ queryKey: ["getRepSetSchemes"] });
 
-    // // refetch data after deletion to update the table
-    // // ste:todo: this is a bit hacky but it works - ideally we would use the queryClient to invalidate the query instead of refetching manually
+    // refetch data after deletion to update the table. ste:todo: does not work
     setPage(0);
-    // setPageSize(pageSize);
-    // setSortBy("date");
-    // setSortOrder("asc");
-    // // refresh graph data as well
-    // // ste:todo: implement graph data refresh after deletion - this is a bit hacky but it works - ideally we would use the queryClient to invalidate the query instead of refetching manually
-    // RepReport();
   };
 
   // #endregion

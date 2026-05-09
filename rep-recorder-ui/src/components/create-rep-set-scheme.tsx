@@ -1,4 +1,3 @@
-import { MenuItem } from "@mui/material";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { useFormik } from "formik";
@@ -11,12 +10,41 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from "dayjs";
 import { useState } from "react";
 import Alert from "@mui/material/Alert";
+import { MenuItem, Select } from "@mui/material";
+
+type MovementOption = {
+  name: string;
+  type: string;
+  isCompound: boolean;
+};
+
+const movements: Record<string, MovementOption> = {
+  bench: { name: "Bench Press", type: "PUSH", isCompound: true },
+  overhead: { name: "Overhead Press", type: "PUSH", isCompound: true },
+  incline: { name: "Incline Bench Press", type: "PUSH", isCompound: true },
+  ezext: { name: "Ez Extension", type: "PUSH", isCompound: false },
+
+  bentrow: { name: "Bent Row", type: "PULL", isCompound: true },
+  shrug: { name: "Deadlift Shrug", type: "PULL", isCompound: true },
+  upright: { name: "Upright Row", type: "PULL", isCompound: true },
+  ezcurl: { name: "Ez Curl", type: "PULL", isCompound: false },
+
+  squat: { name: "Squat", type: "LEGS", isCompound: true },
+  legext: { name: "Leg Extension", type: "LEGS", isCompound: false },
+  legcurl: { name: "Leg Curl", type: "LEGS", isCompound: false },
+
+  wrist: { name: "Wrist Curl", type: "OTHER", isCompound: false },
+  revwrist: { name: "Reverse Wrist Curl", type: "OTHER", isCompound: false }
+};
 
 const validationSchema = yup.object({
   date: yup.mixed().required("Date is required"),
-  exerciseMovement: yup.string().trim().required().min(1).max(100),
   kilogramMass: yup.number().required().positive(),
-  repetitions: yup.number().required().positive().integer()
+  repetitions: yup.number().required().positive().integer(),
+  exerciseMovement: yup
+  .string()
+  .oneOf(Object.keys(movements))
+  .required("Exercise movement is required")
 });
 
 export default function CreateRepSetSchemeForm() {
@@ -26,20 +54,17 @@ export default function CreateRepSetSchemeForm() {
   const form = useFormik({
     initialValues: {
       date: dayjs(),
-      exerciseMovement: "BenchPress",
+      exerciseMovement: "Bench Press",
       kilogramMass: 0,
       repetitions: 0
     },
     validationSchema,
     onSubmit: async (values) => {
       const request: CreateRepSetSchemeRequest = {
-        ...values,
+        kilogramMass: Number(values.kilogramMass),
+        repetitions: Number(values.repetitions),
         date: values.date.toISOString(),
-        exerciseMovement: {
-          name: values.exerciseMovement,
-          type: "Push",
-          isCompound: false
-        }
+        exerciseMovement: movements[values.exerciseMovement]
       };
 
       await createRepSetSchemeAsync(request);
@@ -71,12 +96,10 @@ export default function CreateRepSetSchemeForm() {
           }}
         />
 
-        <TextField
+        <Select
           fullWidth
-          select
           id="exerciseMovement"
           name="exerciseMovement"
-          label="Exercise Movement"
           value={form.values.exerciseMovement}
           onChange={form.handleChange}
           onBlur={form.handleBlur}
@@ -84,23 +107,23 @@ export default function CreateRepSetSchemeForm() {
           disabled={isSubmitting}
           sx={{ marginBottom: 2 }}
         >
-          <MenuItem value="Bench Press">PUSH - Bench Press</MenuItem>
-          <MenuItem value="Overhead Press">PUSH - Overhead Press</MenuItem>
-          <MenuItem value="Incline Bench Press">PUSH - Incline Bench Press</MenuItem>
-          <MenuItem value="Ez Extension">PUSH - Ez Extension</MenuItem>
+          <MenuItem value="bench">PUSH - Bench Press</MenuItem>
+          <MenuItem value="overhead">PUSH - Overhead Press</MenuItem>
+          <MenuItem value="incline">PUSH - Incline Bench Press</MenuItem>
+          <MenuItem value="ezext">PUSH - Ez Extension</MenuItem>
 
-          <MenuItem value="Bent Row">PULL - Bent Row</MenuItem>
-          <MenuItem value="Deadlift Shrug">PULL - Deadlift Shrug</MenuItem>
-          <MenuItem value="Upright Row">PULL - Upright Row</MenuItem>
-          <MenuItem value="Ez Curl">PULL - Ez Curl</MenuItem>
+          <MenuItem value="bentrow">PULL - Bent Row</MenuItem>
+          <MenuItem value="shrug">PULL - Deadlift Shrug</MenuItem>
+          <MenuItem value="upright">PULL - Upright Row</MenuItem>
+          <MenuItem value="ezcurl">PULL - Ez Curl</MenuItem>
 
-          <MenuItem value="Squat">LEGS - Squat</MenuItem>
-          <MenuItem value="Leg Extension">LEGS - Leg Extension</MenuItem>
-          <MenuItem value="Leg Curl">LEGS - Leg Curl</MenuItem>
+          <MenuItem value="squat">LEGS - Squat</MenuItem>
+          <MenuItem value="legext">LEGS - Leg Extension</MenuItem>
+          <MenuItem value="legcurl">LEGS - Leg Curl</MenuItem>
 
-          <MenuItem value="Wrist Curl">OTHER - Wrist Curl</MenuItem>
-          <MenuItem value="Reverse Wrist Curl">OTHER - Reverse Wrist Curl</MenuItem>
-        </TextField>
+          <MenuItem value="wrist">OTHER - Wrist Curl</MenuItem>
+          <MenuItem value="revwrist">OTHER - Reverse Wrist Curl</MenuItem>
+        </Select>
 
         <TextField
           fullWidth
