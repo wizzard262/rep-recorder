@@ -32,6 +32,7 @@ const movements: Record<string, MovementOption> = {
   squat: { name: "Squat", type: "LEGS", isCompound: true },
   legext: { name: "Leg Extension", type: "LEGS", isCompound: false },
   legcurl: { name: "Leg Curl", type: "LEGS", isCompound: false },
+  calfraisecurl: { name: "Calf Raise", type: "LEGS", isCompound: false },
 
   wrist: { name: "Wrist Curl", type: "OTHER", isCompound: false },
   revwrist: { name: "Reverse Wrist Curl", type: "OTHER", isCompound: false }
@@ -120,6 +121,7 @@ export default function CreateRepSetSchemeForm() {
           <MenuItem value="squat">LEGS - Squat</MenuItem>
           <MenuItem value="legext">LEGS - Leg Extension</MenuItem>
           <MenuItem value="legcurl">LEGS - Leg Curl</MenuItem>
+          <MenuItem value="calfraisecurl">LEGS - Calf Raise</MenuItem>
 
           <MenuItem value="wrist">OTHER - Wrist Curl</MenuItem>
           <MenuItem value="revwrist">OTHER - Reverse Wrist Curl</MenuItem>

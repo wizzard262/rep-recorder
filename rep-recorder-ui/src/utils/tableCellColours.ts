@@ -15,7 +15,6 @@ export const movementColours = {
   // 3. PURPLE/BLUE - LEGS group
   "Squat": "#f1e9fb",
   "Leg Extension": "#ede4f7",
-  "ExerciseType.Legs": "#f3edfc",
   "Leg Curl": "#efe7fa",
   "Calf Raise": "#e9e1f5",
 
