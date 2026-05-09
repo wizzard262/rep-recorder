@@ -10,7 +10,7 @@ function Homepage() {
 <Container maxWidth={false} sx={{ padding: 4 }}>
   <header style={{ display: "flex", alignItems: "center", gap: "20px" }}>
     <img
-      src="src/assets/barbell.png"
+      src="/rep-recorder/barbell.png"
       alt="Rep Recorder Barbell"
       style={{ width: "800px" }}
     />
