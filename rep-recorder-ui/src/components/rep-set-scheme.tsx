@@ -14,7 +14,6 @@ import TableHead from "@mui/material/TableHead";
 import Skeleton from "@mui/material/Skeleton";
 import { categoryColours, movementColours } from "~/utils/tableCellColours";
 import { Button } from "@mui/material";
-import RepReport from "./rep-report";
 import { useQueryClient } from "@tanstack/react-query";
 
 export default function ListRetSetScheme() {
