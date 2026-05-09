@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using RepRecorder.Api.Domain;
 using RepRecorder.Api.Dtos;
 using RepRecorder.Api.Enums;
 using RepRecorder.Api.Helpers;
@@ -7,6 +6,11 @@ using RepRecorder.Api.Repositories;
 
 namespace RepRecorder.Api.Controllers;
 
+// N.B. This controller is implemented using the traditional ControllerBase approach instead of the newer minimal API style.
+// This is intentional to demonstrate both approaches in the codebase
+// The endpoints and functionality are equivalent to what is defined in RepSetSchemeEndpoints.cs
+// the control is not used in the actual API but is used in the tests to verify the behavior of the endpoints
+// to change from minimal API to controller-based, in Program.cs replace "app.MapRepSetSchemeEndpoints();" with "app.MapControllers();"
 [ApiController]
 [Route("[controller]")]
 public class RepSetSchemeController(IRepSetSchemeRepository repository) : ControllerBase

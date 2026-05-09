@@ -1,9 +1,8 @@
-﻿using Microsoft.Azure.Cosmos;
-using Newtonsoft.Json;
+using System.Net;
+using Microsoft.Azure.Cosmos;
 using RepRecorder.Api.Abstractions;
 using RepRecorder.Api.Domain;
 using RepRecorder.Api.Enums;
-using System.Net;
 
 namespace RepRecorder.Api.Repositories;
 

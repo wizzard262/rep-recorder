@@ -1,4 +1,4 @@
-﻿using Bogus;
+using Bogus;
 using RepRecorder.Api.Domain;
 
 namespace RepRecorder.Api.Services;

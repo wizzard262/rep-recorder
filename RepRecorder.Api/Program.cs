@@ -1,7 +1,8 @@
+using System.Text.Json.Serialization;
 using Microsoft.Azure.Cosmos;
+using RepRecorder.Api;
 using RepRecorder.Api.Repositories;
 using RepRecorder.Api.Services;
-using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 var useFake = builder.Configuration.GetValue<bool>("UseFakeRepo");
@@ -75,5 +76,8 @@ if (app.Environment.IsDevelopment() || leaveOpenForPortfolioUse)
 app.UseHttpsRedirection();
 app.UseCors();
 app.UseAuthorization();
-app.MapControllers();
+
+// use minimal API endpoints To use controllers, replace with: app.MapControllers(); and uncomment content of "RepSetSchemeController.cs"
+app.MapRepSetSchemeEndpoints(); 
+
 app.Run();
