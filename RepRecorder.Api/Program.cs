@@ -21,8 +21,11 @@ builder.Services.AddRepositories(builder.Configuration, useFake);
 var app = builder.Build();
 
 // Startup log
-var logger = app.Services.GetRequiredService<ILoggerFactory>().CreateLogger("Startup");
-logger.LogInformation("Starting RepRecorder API");
+app.Lifetime.ApplicationStarted.Register(() =>
+{
+    var logger = app.Services.GetRequiredService<ILogger<Program>>();
+    logger.LogInformation("Starting RepRecorder API");
+});
 
 // Pipeline
 if (useFake)
