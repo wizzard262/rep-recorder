@@ -10,6 +10,7 @@ builder.Services.AddCorsPolicy();
 builder.Services.AddSwaggerDocs();
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
+builder.Services.AddApplicationInsightsTelemetry();
 builder.Services.Configure<JsonOptions>(options =>
 {
     options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
