@@ -60,7 +60,7 @@ export default function ListRetSetScheme() {
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
-    setPage(1);
+    setPage(0);
     setPageSize(parseInt(event.target.value, 10));
     setSortBy("date");
     setSortOrder("asc");
