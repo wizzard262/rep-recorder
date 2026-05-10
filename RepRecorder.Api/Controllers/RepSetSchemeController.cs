@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
+
 using RepRecorder.Api.Dtos;
 using RepRecorder.Api.Enums;
-using RepRecorder.Api.Helpers;
+using RepRecorder.Api.Extensions;
 using RepRecorder.Api.Repositories;
 
 namespace RepRecorder.Api.Controllers;

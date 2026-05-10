@@ -1,4 +1,4 @@
-﻿namespace RepRecorder.Api.Helpers;
+namespace RepRecorder.Api.Extensions;
 
 public static class RequestExtensions
 {

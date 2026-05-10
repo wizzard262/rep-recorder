@@ -1,9 +1,8 @@
 using RepRecorder.Api.Dtos;
 using RepRecorder.Api.Enums;
-using RepRecorder.Api.Helpers;
 using RepRecorder.Api.Repositories;
 
-namespace RepRecorder.Api;
+namespace RepRecorder.Api.Extensions.Program;
 
 public static class RepSetSchemeEndpoints
 {
