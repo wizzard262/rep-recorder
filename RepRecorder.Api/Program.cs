@@ -11,6 +11,7 @@ builder.Services.AddSwaggerDocs();
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 builder.Services.AddApplicationInsightsTelemetry();
+
 builder.Services.Configure<JsonOptions>(options =>
 {
     options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
@@ -20,7 +21,7 @@ builder.Services.AddRepositories(builder.Configuration, useFake);
 var app = builder.Build();
 
 // Startup log
-var logger = app.Services.GetRequiredService<ILogger<Program>>();
+var logger = app.Services.GetRequiredService<ILoggerFactory>().CreateLogger("Startup");
 logger.LogInformation("Starting RepRecorder API");
 
 // Pipeline

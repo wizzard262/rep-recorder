@@ -23,6 +23,7 @@ function Homepage() {
       <li>Open API: <a href="https://reprecorderapi-dfg9f8b8babha5ey.ukwest-01.azurewebsites.net/openapi/v1.json" target="_blank" rel="noopener noreferrer">https://reprecorderapi-dfg9f8b8babha5ey.ukwest-01.azurewebsites.net/openapi/v1.json</a></li>
       <li>Local Development fake "in memory" repo</li>
       <li>Cosmos DB (hosted on Azure): <a href="https://azure-cosmos-db-account-steve-jones.documents.azure.com/" target="_blank" rel="noopener noreferrer">https://azure-cosmos-db-account-steve-jones.documents.azure.com/</a></li>
+      <li>Applicaion Insights and logging</li>
     </ul>
   </header>
 
