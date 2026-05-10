@@ -31,11 +31,13 @@ public class CosmosRepSetSchemeRepository : IRepSetSchemeRepository
         // Cosmos requires alias "c"
         var sortField = sortBy switch
         {
-            SortBy.date => "c.date",
-            SortBy.mass => "c.kilogramMass",
-            SortBy.reps => "c.repetitions",
-            SortBy.movement => "c.exerciseMovement.name",
-            _ => "c.date"
+            SortBy.date => "c.Date",
+            SortBy.mass => "c.KilogramMass",
+            SortBy.reps => "c.Repetitions",
+            SortBy.movement => "c.ExerciseMovement.Name",
+            SortBy.category => "c.ExerciseMovement.Type",
+            SortBy.compound => "c.ExerciseMovement.IsCompound",
+            _ => "c.Date"
         };
 
         // Cosmos SQL must use FROM c
@@ -70,8 +72,7 @@ public class CosmosRepSetSchemeRepository : IRepSetSchemeRepository
         }
 
         // Count query (fast path)
-        var countQuery = _container.GetItemQueryIterator<int>(
-            new QueryDefinition("SELECT VALUE COUNT(1) FROM c"));
+        var countQuery = _container.GetItemQueryIterator<int>(new QueryDefinition("SELECT VALUE COUNT(1) FROM c"));
 
         var totalCount = 0;
         while (countQuery.HasMoreResults)
