@@ -24,41 +24,55 @@ public class CosmosRepSetSchemeRepository : IRepSetSchemeRepository
         SortOrder sortOrder,
         SortBy sortBy)
     {
-        _logger.LogInformation("Fetching page {PageNumber} with size {PageSize}, sort {SortBy} {SortOrder}",
-            pageNumber, pageSize, sortBy, sortOrder);
+        _logger.LogInformation("Fetching page {PageNumber} with size {PageSize}, sort {SortBy} {SortOrder}", pageNumber, pageSize, sortBy, sortOrder);
 
-        var pagingOffset = (pageNumber - 1) * pageSize;
         var order = sortOrder == SortOrder.asc ? "ASC" : "DESC";
+
+        // Cosmos requires alias "c"
         var sortField = sortBy switch
         {
-            SortBy.date => "repSetScheme.date",
-            SortBy.mass => "repSetScheme.kilogramMass",
-            SortBy.reps => "repSetScheme.repetitions",
-            SortBy.movement => "repSetScheme.exerciseMovement.name",
-            _ => "repSetScheme.date"
+            SortBy.date => "c.date",
+            SortBy.mass => "c.kilogramMass",
+            SortBy.reps => "c.repetitions",
+            SortBy.movement => "c.exerciseMovement.name",
+            _ => "c.date"
         };
 
+        // Cosmos SQL must use FROM c
         var sql = $@"
-        SELECT * FROM repSetScheme
-        ORDER BY {sortField} {order}
-        OFFSET {pagingOffset} LIMIT {pageSize}";
+        SELECT * 
+        FROM c 
+        ORDER BY {sortField} {order}";
 
-        if (_logger.IsEnabled(LogLevel.Debug))
-        {
-            _logger.LogDebug("Cosmos query: {Sql}", sql);
-        }
+        var query = _container.GetItemQueryIterator<RepSetScheme>(
+            new QueryDefinition(sql),
+            requestOptions: new QueryRequestOptions
+            {
+                MaxItemCount = pageSize
+            });
 
-        var query = _container.GetItemQueryIterator<RepSetScheme>(new QueryDefinition(sql));
         var items = new List<RepSetScheme>();
 
-        while (query.HasMoreResults)
+        // Skip pages until we reach the requested one
+        for (var i = 1; i <= pageNumber; i++)
         {
+            if (!query.HasMoreResults)
+            {
+                break;
+            }
+
             var page = await query.ReadNextAsync();
-            items.AddRange(page);
+
+            if (i == pageNumber)
+            {
+                items.AddRange(page);
+            }
         }
 
+        // Count query (fast path)
         var countQuery = _container.GetItemQueryIterator<int>(
-            new QueryDefinition("SELECT VALUE COUNT(1) FROM repSetScheme"));
+            new QueryDefinition("SELECT VALUE COUNT(1) FROM c"));
+
         var totalCount = 0;
         while (countQuery.HasMoreResults)
         {
@@ -70,6 +84,7 @@ public class CosmosRepSetSchemeRepository : IRepSetSchemeRepository
 
         return new PaginatedList<RepSetScheme>(items, totalCount, pageNumber, pageSize);
     }
+
 
     public async Task<RepSetScheme?> GetByIdAsync(Guid id)
     {
