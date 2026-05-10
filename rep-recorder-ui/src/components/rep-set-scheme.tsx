@@ -8,13 +8,14 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import useApi from "~/hooks/useApi";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import TableHead from "@mui/material/TableHead";
 import Skeleton from "@mui/material/Skeleton";
 import { categoryColours, movementColours } from "~/utils/tableCellColours";
 import { Button } from "@mui/material";
 import { useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 export default function ListRetSetScheme() {
 
@@ -66,15 +67,35 @@ export default function ListRetSetScheme() {
   };
 
   const handleDelete = (id: string) => {
-    deleteRow(id);
-
-    // Invalidate ALL queries that fetch rep set schemes
-    //ste:todo: delete does not currently trigger a refetch of the data
-    queryClient.invalidateQueries({ queryKey: ["getRepSetSchemes"] });
-
-    // refetch data after deletion to update the table. ste:todo: does not work
+    deleteMutation.mutate(id);
     setPage(0);
   };
+
+  const deleteMutation = useMutation({
+    mutationFn: (id: string) => deleteRow(id),
+    onSuccess: () => {
+      toast.success("Deleted", {
+        duration: 5000,
+        style: {
+          fontSize: "1.2rem",
+          padding: "16px 20px",
+        },
+      });
+
+      queryClient.invalidateQueries({
+        predicate: (q) => q.queryKey[0] === "getRepSetSchemes"
+      });
+    },
+    onError: () => {
+      toast.success("Delete failed", {
+        duration: 5000,
+        style: {
+          fontSize: "1.2rem",
+          padding: "16px 20px",
+        },
+      });
+    }
+  });
 
   // #endregion
 

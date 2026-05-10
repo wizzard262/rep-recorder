@@ -16,7 +16,7 @@ function Homepage() {
     />
     <ul style={{ textAlign: "left" , fontSize: "12px" }}>
       <li>Git mono-repostory stored on github: <a href="https://github.com/wizzard262/rep-recorder/" target="_blank" rel="noopener noreferrer">https://github.com/wizzard262/rep-recorder/</a> </li>
-      <li>React 19.2.4 front-end (build, Ste:todo:[run Jest/RTL tests], deploy from GitHub Actions)</li>
+      <li>React 19.2.4 front-end with Mui, Recharts & ReactHotToast (build, Ste:todo:[run Jest/RTL tests], deploy from GitHub Actions)</li>
       <li>Front-end hosted on GitHubPages <a href="https://wizzard262.github.io/rep-recorder/">https://wizzard262.github.io/rep-recorder/</a></li>
       <li>C# .Net 8 Minimal API (build, run unit tests, deploy from GitHub Actions using deploy-api.yml.)</li>
       <li>API Hosted on Azure, with Swagger: <a href="https://reprecorderapi-dfg9f8b8babha5ey.ukwest-01.azurewebsites.net/swagger/index.html" target="_blank" rel="noopener noreferrer">https://reprecorderapi-dfg9f8b8babha5ey.ukwest-01.azurewebsites.net/swagger/index.html</a></li>

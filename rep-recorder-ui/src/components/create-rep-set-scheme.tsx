@@ -55,7 +55,7 @@ export default function CreateRepSetSchemeForm() {
   const form = useFormik({
     initialValues: {
       date: dayjs(),
-      exerciseMovement: "Bench Press",
+      exerciseMovement: "bench",
       kilogramMass: 0,
       repetitions: 0
     },
