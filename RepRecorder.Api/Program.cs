@@ -9,6 +9,15 @@ using RepRecorder.Api.Services;
 var builder = WebApplication.CreateBuilder(args);
 var useFake = builder.Configuration.GetValue<bool>("UseFakeRepo");
 
+
+// Cosmos DB connection string can be set in appsettings.json or via environment variable (e.g. in Azure App Service settings) - environment variable takes precedence
+builder.Configuration.AddEnvironmentVariables();
+var envConn = Environment.GetEnvironmentVariable("COSMOS_CONNECTION_STRING");
+if (!string.IsNullOrEmpty(envConn))
+{
+    builder.Configuration["CosmosDb:ConnectionString"] = envConn;
+}
+
 // Add services to the container.
 builder.Services.AddCors(options =>
 {
@@ -21,11 +30,12 @@ builder.Services.AddCors(options =>
 builder.Services.AddOpenApi();
 
 // ensure enums pass the text not the integer in CONTROLLER API endpoints
-builder.Services.AddControllers()
-    .AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-    });
+// N.B. Controller is now off as we use MinmialApi
+//builder.Services.AddControllers()
+//    .AddJsonOptions(options =>
+//    {
+//        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+//    });
 
 // ensure enums pass the text not the integer in API endpoints for minimal APIs as well
 builder.Services.Configure<JsonOptions>(options =>
@@ -45,7 +55,7 @@ else
     builder.Services.AddSingleton<CosmosClient>(sp =>
     {
         var config = sp.GetRequiredService<IConfiguration>();
-        var conn = config["Cosmos:ConnectionString"];
+        var conn = config["CosmosDb:ConnectionString"];
         return new CosmosClient(conn);
     });
 
@@ -83,7 +93,6 @@ if (app.Environment.IsDevelopment() || leaveOpenForPortfolioUse)
 
 app.UseHttpsRedirection();
 app.UseCors();
-app.UseAuthorization();
 
 // use minimal API endpoints To use controllers, replace with: app.MapControllers(); and uncomment content of "RepSetSchemeController.cs"
 app.MapRepSetSchemeEndpoints(); 

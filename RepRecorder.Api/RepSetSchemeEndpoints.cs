@@ -13,12 +13,12 @@ public static class RepSetSchemeEndpoints
 
         group.MapGet("/", async (
             IRepSetSchemeRepository repo,
-            int pageNumber,
-            int pageSize,
+            int? pageNumber,
+            int? pageSize,
             SortOrder sortOrder,
             SortBy sortBy) =>
         {
-            var result = await repo.GetAllAsync(pageNumber, pageSize, sortOrder, sortBy);
+            var result = await repo.GetAllAsync(pageNumber ?? 1, pageSize ?? 5, sortOrder, sortBy);
             return Results.Ok(result);
         });
 
