@@ -40,7 +40,7 @@ const movements: Record<string, MovementOption> = {
 
 const validationSchema = yup.object({
   date: yup.mixed().required("Date is required"),
-  kilogramMass: yup.number().required().positive(),
+  kilogramMass: yup.number().required().positive().integer(),
   repetitions: yup.number().required().positive().integer(),
   exerciseMovement: yup
   .string()
@@ -137,7 +137,7 @@ export default function CreateRepSetSchemeForm() {
           onChange={form.handleChange}
           onBlur={form.handleBlur}
           error={form.touched.kilogramMass && Boolean(form.errors.kilogramMass)}
-          helperText="Enter the mass in kilograms (Kg)"
+          helperText="Enter the mass in kilograms (Kg) (Integer)"
           disabled={isSubmitting}
           sx={{ marginBottom: 2 }}
         />
