@@ -1,5 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
-import useApi from "~/hooks/useApi";
+import type { Key, ReactElement, JSXElementConstructor, ReactNode, ReactPortal } from "react";
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, CartesianGrid } from "recharts";
 
 const colours = [
@@ -18,15 +17,7 @@ const colours = [
   "#808000"  // olive
 ];
 
-
-export default function RepReport() {
-  const { getRepSetSchemes } = useApi();
-
-  const { data, status } = useQuery({
-    queryKey: ["getRepSetSchemes", 0, 10000, "date", "asc"],
-    queryFn: () => getRepSetSchemes(0, 10000, "date", "asc"),
-  });
-
+export default function RepReport({ data }: { data: any[] }) {
   // Transform API rows into flat rows
   const transformData = (items: any[]) => {
     return items.map(item => ({
@@ -55,14 +46,13 @@ export default function RepReport() {
     return pivoted;
   };
 
-  const items = data?.items ?? [];
-  const transformed = transformData(items);
+  const transformed = transformData(data);
   const chartData = pivotForRecharts(transformed);
 
   // Unique movement names for <Line />
   const movements = [...new Set(transformed.map(r => r.movement))];
 
-  if (!data?.items) {
+  if (!data || data.length === 0) {
     return <p>Loading Rep Set Schemes...</p>;
   }
 
@@ -95,28 +85,21 @@ export default function RepReport() {
           />
         ))}
       </LineChart>
-
-      {status === "error" && (
-        <p><b>Error loading Rep Set Schemes.</b></p>
-      )}
-
-      {status === "success" && (
-        <div>
-          <p><b>Rep Set Schemes loaded successfully.</b></p>
-          <div style={{ fontSize: "10px" }}>
-            {items.map(repSetScheme => (
-              <div key={repSetScheme.id}>
-                <p>
-                  Date: {new Date(repSetScheme.date).toLocaleDateString()} –
-                  Exercise Movement: {repSetScheme.exerciseMovement.name} –
-                  Kilogram Mass: {repSetScheme.kilogramMass} –
-                  Repetitions: {repSetScheme.repetitions}
-                </p>
-              </div>
-            ))}
-          </div>
+      <div>
+        <p><b>Rep Set Schemes loaded successfully.</b></p>
+        <div style={{ fontSize: "10px" }}>
+          {data.map((repSetScheme: { id: Key | null | undefined; date: string | number | Date; exerciseMovement: { name: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined; }; kilogramMass: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined; repetitions: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined; }) => (
+            <div key={repSetScheme.id}>
+              <p>
+                Date: {new Date(repSetScheme.date).toLocaleDateString()} –
+                Exercise Movement: {repSetScheme.exerciseMovement.name} –
+                Kilogram Mass: {repSetScheme.kilogramMass} –
+                Repetitions: {repSetScheme.repetitions}
+              </p>
+            </div>
+          ))}
         </div>
-      )}
+      </div>
     </div>
   );
 }
