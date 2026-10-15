@@ -27,31 +27,15 @@ function Homepage() {
     <Container maxWidth="xl" sx={{ py: { xs: 2, md: 4 }, px: { xs: 2, md: 4 } }}>
       <Stack spacing={3}>
         <header className="site-header card">
-          <GarySlogans />
-          <div className="title-block">
+          <div className="brand">
             <img
+              className="logo"
               src={`${import.meta.env.BASE_URL}barbell.png`}
               alt="Rep Recorder Barbell"
-              style={{ width: "100%", maxWidth: "420px" }}
             />
-            <ul className="tech-list">
-              <li>Git mono-repository stored on github: <a href="https://github.com/wizzard262/rep-recorder/" target="_blank" rel="noopener noreferrer">https://github.com/wizzard262/rep-recorder/</a> </li>
-              <li>React 19.2.4 front-end with Mui, Recharts & ReactHotToast (build, Ste:todo:[run Jest/RTL tests], deploy from GitHub Actions)</li>
-              <li>Front-end hosted on GitHubPages <a href="https://wizzard262.github.io/rep-recorder/">https://wizzard262.github.io/rep-recorder/</a></li>
-              <li>GitHub Pages UI deploy done from GitHub Actions <a href="https://github.com/wizzard262/rep-recorder/actions/workflows/deploy-ui.yml" target="_blank" rel="noopener noreferrer">https://github.com/wizzard262/rep-recorder/actions/workflows/deploy-ui.yml</a>{" "}
-                <i>(~\rep-recorder\.github\workflows\deploy-ui.yml)</i>
-              </li>
-              <li>C# backend deploy done from from GitHub Actions <a href="https://github.com/wizzard262/rep-recorder/actions/workflows/deploy-api.yml" target="_blank" rel="noopener noreferrer">https://github.com/wizzard262/rep-recorder/actions/workflows/deploy-api.yml</a>{" "}
-                <i>(~\rep-recorder\.github\workflows\deploy-api.yml)</i>
-              </li>
-              <li>C# .Net 8 Minimal API (build, run unit tests, deploy from GitHub Actions using deploy-api.yml.)</li>
-              <li>API Hosted on Azure, with Swagger: <a href="https://reprecorderapi-dfg9f8b8babha5ey.ukwest-01.azurewebsites.net/swagger/index.html" target="_blank" rel="noopener noreferrer">https://reprecorderapi-dfg9f8b8babha5ey.ukwest-01.azurewebsites.net/swagger/index.html</a></li>
-              <li>Open API: <a href="https://reprecorderapi-dfg9f8b8babha5ey.ukwest-01.azurewebsites.net/openapi/v1.json" target="_blank" rel="noopener noreferrer">https://reprecorderapi-dfg9f8b8babha5ey.ukwest-01.azurewebsites.net/openapi/v1.json</a></li>
-              <li>Local Development fake "in memory" repo</li>
-              <li>Cosmos DB (hosted on Azure): <a href="https://azure-cosmos-db-account-steve-jones.documents.azure.com/" target="_blank" rel="noopener noreferrer">https://azure-cosmos-db-account-steve-jones.documents.azure.com/</a></li>
-              <li>Application Insights and logging</li>
-            </ul>
+            <GarySlogans />
           </div>
+          <RepReport data={items} />
         </header>
 
         {status === "error" && (
@@ -68,7 +52,24 @@ function Homepage() {
               <CreateRepSetSchemeForm />
             </section>
             <section className="card">
-              <RepReport data={items} />
+              <h2>About this build</h2>
+                <ul className="tech-list">
+                  <li>Git mono-repository stored on github: <a href="https://github.com/wizzard262/rep-recorder/" target="_blank" rel="noopener noreferrer">https://github.com/wizzard262/rep-recorder/</a> </li>
+                  <li>React 19.2.4 front-end with Mui, Recharts & ReactHotToast (build, Ste:todo:[run Jest/RTL tests], deploy from GitHub Actions)</li>
+                  <li>Front-end hosted on GitHubPages <a href="https://wizzard262.github.io/rep-recorder/">https://wizzard262.github.io/rep-recorder/</a></li>
+                  <li>GitHub Pages UI deploy done from GitHub Actions <a href="https://github.com/wizzard262/rep-recorder/actions/workflows/deploy-ui.yml" target="_blank" rel="noopener noreferrer">https://github.com/wizzard262/rep-recorder/actions/workflows/deploy-ui.yml</a>{" "}
+                    <i>(~\rep-recorder\.github\workflows\deploy-ui.yml)</i>
+                  </li>
+                  <li>C# backend deploy done from from GitHub Actions <a href="https://github.com/wizzard262/rep-recorder/actions/workflows/deploy-api.yml" target="_blank" rel="noopener noreferrer">https://github.com/wizzard262/rep-recorder/actions/workflows/deploy-api.yml</a>{" "}
+                    <i>(~\rep-recorder\.github\workflows\deploy-api.yml)</i>
+                  </li>
+                  <li>C# .Net 8 Minimal API (build, run unit tests, deploy from GitHub Actions using deploy-api.yml.)</li>
+                  <li>API Hosted on Azure, with Swagger: <a href="https://reprecorderapi-dfg9f8b8babha5ey.ukwest-01.azurewebsites.net/swagger/index.html" target="_blank" rel="noopener noreferrer">https://reprecorderapi-dfg9f8b8babha5ey.ukwest-01.azurewebsites.net/swagger/index.html</a></li>
+                  <li>Open API: <a href="https://reprecorderapi-dfg9f8b8babha5ey.ukwest-01.azurewebsites.net/openapi/v1.json" target="_blank" rel="noopener noreferrer">https://reprecorderapi-dfg9f8b8babha5ey.ukwest-01.azurewebsites.net/openapi/v1.json</a></li>
+                  <li>Local Development fake "in memory" repo</li>
+                  <li>Cosmos DB (hosted on Azure): <a href="https://azure-cosmos-db-account-steve-jones.documents.azure.com/" target="_blank" rel="noopener noreferrer">https://azure-cosmos-db-account-steve-jones.documents.azure.com/</a></li>
+                  <li>Application Insights and logging</li>
+                </ul>
             </section>
           </Box>
 

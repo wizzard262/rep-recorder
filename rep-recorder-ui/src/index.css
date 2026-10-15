@@ -73,9 +73,21 @@ a {
 
 .site-header {
   display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 24px;
-  align-items: start;
+  grid-template-columns: 400px minmax(0, 1fr);
+  gap: 32px;
+  align-items: center;
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.brand .logo {
+  width: 100%;
+  max-width: 400px;
 }
 
 .gary {
@@ -127,19 +139,11 @@ a {
   transform: translateY(4px);
 }
 
-.title-block {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  min-width: 0;
-}
-
-
 .tech-list {
   margin: 0;
   padding-left: 18px;
-  font-size: 12.5px;
-  line-height: 1.6;
+  font-size: 14px;
+  line-height: 1.7;
   color: var(--text);
   overflow-wrap: anywhere;
 }
@@ -326,7 +330,7 @@ a {
   color: var(--accent);
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
   .site-header {
     grid-template-columns: minmax(0, 1fr);
   }
