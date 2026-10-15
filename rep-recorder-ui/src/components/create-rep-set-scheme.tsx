@@ -77,7 +77,7 @@ export default function CreateRepSetSchemeForm() {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <section id="add-firm">
-        <h2 style={{ textAlign: "left" }}>Add Rep Set Schemes</h2>
+        <h2>Add Rep Set Schemes</h2>
 
         <DatePicker
           label="Date"

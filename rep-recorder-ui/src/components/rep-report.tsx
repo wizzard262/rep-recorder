@@ -1,5 +1,5 @@
-import type { Key, ReactElement, JSXElementConstructor, ReactNode, ReactPortal } from "react";
-import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, CartesianGrid } from "recharts";
+import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, CartesianGrid, ResponsiveContainer } from "recharts";
+import type { RepSetScheme } from "~/types/rep-set-scheme-types";
 
 const colours = [
   "#e6194b", // strong red
@@ -17,89 +17,60 @@ const colours = [
   "#808000"  // olive
 ];
 
-export default function RepReport({ data }: { data: any[] }) {
+type ChartRow = { date: string } & Record<string, number | string>;
+
+export default function RepReport({ data }: { data: RepSetScheme[] }) {
   // Transform API rows into flat rows
-  const transformData = (items: any[]) => {
-    return items.map(item => ({
-      // Use ISO date for consistent X-axis
-      date: new Date(item.date).toISOString().slice(0, 10),
-      movement: item.exerciseMovement.name,
-      volume: item.kilogramMass * item.repetitions
-    }));
-  };
+  const transformed = data.map(item => ({
+    // Use ISO date for consistent X-axis
+    date: new Date(item.date).toISOString().slice(0, 10),
+    movement: item.exerciseMovement.name,
+    volume: item.kilogramMass * item.repetitions
+  }));
 
-  // Pivot rows into Recharts format (leave missing values as null)
-  const pivotForRecharts = (rows: any[]) => {
-    const map: any = {};
-
-    rows.forEach(r => {
-      if (!map[r.date]) {
-        map[r.date] = { date: r.date };
-      }
-      map[r.date][r.movement] = r.volume;
-    });
-
-    const pivoted = Object.values(map);
-
-    // Sort by date
-    pivoted.sort((a: any, b: any) => a.date.localeCompare(b.date));
-    return pivoted;
-  };
-
-  const transformed = transformData(data);
-  const chartData = pivotForRecharts(transformed);
+  // Pivot rows into Recharts format (leave missing values as null), sorted by date
+  const byDate: Record<string, ChartRow> = {};
+  transformed.forEach(r => {
+    byDate[r.date] ??= { date: r.date };
+    byDate[r.date][r.movement] = r.volume;
+  });
+  const chartData = Object.values(byDate).sort((a, b) => a.date.localeCompare(b.date));
 
   // Unique movement names for <Line />
   const movements = [...new Set(transformed.map(r => r.movement))];
 
-  if (!data || data.length === 0) {
-    return <p>Loading Rep Set Schemes...</p>;
-  }
-
   return (
-    <div style={{ textAlign: "left" }}>
-      <LineChart width={900} height={400} data={chartData}>
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="date" />
-        <YAxis />
-        <Tooltip />
-        <Legend
-          wrapperStyle={{
-            paddingTop: "10px",
-            fontSize: "12px",
-            textAlign: "left"
-          }}
-          iconType="circle"
-          iconSize={10}
-        />
+    <div>
+      <h2>Volume by Movement</h2>
+      {data.length === 0 ? (
+        <p>Loading Rep Set Schemes...</p>
+      ) : (
+        <ResponsiveContainer width="100%" height={400}>
+          <LineChart data={chartData} margin={{ top: 8, right: 16, bottom: 0, left: 0 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#e3e2e8" />
+            <XAxis dataKey="date" tick={{ fontSize: 12 }} />
+            <YAxis tick={{ fontSize: 12 }} />
+            <Tooltip />
+            <Legend
+              wrapperStyle={{ paddingTop: "10px", fontSize: "12px" }}
+              iconType="circle"
+              iconSize={10}
+            />
 
-        {movements.map((movement, i) => (
-          <Line
-            key={movement}
-            type="linear"
-            dataKey={movement}
-            stroke={colours[i % colours.length]}
-            strokeWidth={2}
-            dot={false}
-            connectNulls={true}   // ← THIS is the magic line
-          />
-        ))}
-      </LineChart>
-      <div>
-        <p><b>Rep Set Schemes loaded successfully.</b></p>
-        <div style={{ fontSize: "10px" }}>
-          {data.map((repSetScheme: { id: Key | null | undefined; date: string | number | Date; exerciseMovement: { name: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined; }; kilogramMass: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined; repetitions: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined; }) => (
-            <div key={repSetScheme.id}>
-              <p>
-                Date: {new Date(repSetScheme.date).toLocaleDateString()} –
-                Exercise Movement: {repSetScheme.exerciseMovement.name} –
-                Kilogram Mass: {repSetScheme.kilogramMass} –
-                Repetitions: {repSetScheme.repetitions}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
+            {movements.map((movement, i) => (
+              <Line
+                key={movement}
+                type="linear"
+                dataKey={movement}
+                stroke={colours[i % colours.length]}
+                strokeWidth={2}
+                dot={false}
+                connectNulls={true}   // ← THIS is the magic line
+              />
+            ))}
+          </LineChart>
+        </ResponsiveContainer>
+      )}
     </div>
   );
 }

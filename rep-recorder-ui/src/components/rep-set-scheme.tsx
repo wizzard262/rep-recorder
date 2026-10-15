@@ -87,7 +87,7 @@ export default function ListRetSetScheme() {
       });
     },
     onError: () => {
-      toast.success("Delete failed", {
+      toast.error("Delete failed", {
         duration: 5000,
         style: {
           fontSize: "1.2rem",
@@ -101,15 +101,14 @@ export default function ListRetSetScheme() {
 
   return (
     <section id="list-firms">
-      <h2 style={{ textAlign: "left" }}>Rep Set Schemes</h2>
+      <h2>Rep Set Schemes</h2>
       {status === "error" && <p>Error loading Rep Set Schemes.</p>}
       {status !== "error" && (
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} sx={{ boxShadow: "none", border: "1px solid var(--border)" }}>
           <Table
-            style={{ border: "2px solid #ccc" }}
             sx={{ minWidth: 500 }}>
             <TableHead>
-              <TableRow sx={{ backgroundColor: '#f5f5f5' }}>
+              <TableRow sx={{ backgroundColor: '#f7f7fa' }}>
                 <TableCell
                   align="right"
                   scope="row"
@@ -204,7 +203,7 @@ export default function ListRetSetScheme() {
                     <TableCell>{row.repetitions}</TableCell>
                     <TableCell>{row.kilogramMass * row.repetitions}</TableCell>
                     <TableCell>
-                      <Button variant="contained" color="primary" size="small" onClick={() => handleDelete(row.id)}>
+                      <Button variant="outlined" color="error" size="small" onClick={() => handleDelete(row.id)}>
                         Delete
                       </Button>
                     </TableCell>
