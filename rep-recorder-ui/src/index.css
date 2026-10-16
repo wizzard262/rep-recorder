@@ -85,6 +85,10 @@ a {
   min-width: 0;
 }
 
+.header-report {
+  min-width: 0;
+}
+
 .brand .logo {
   width: 100%;
   max-width: 400px;
