@@ -57,5 +57,3 @@ jobs:
         app-name: "RepRecorderApi"
         publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISH_PROFILE }}
         package: ./publish
-        app-settings: |
-          -name COSMOS_CONNECTION_STRING -value "${{ secrets.COSMOS_CONNECTION_STRING }}"
